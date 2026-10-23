@@ -21,6 +21,9 @@ env:
 
 jobs:
   deploy:
+    # The VERCEL_TOKEN secret lives in the GitHub environment named VERCEL_TOKEN
+    # (no protection rules), so the job must reference it to read the secret.
+    environment: VERCEL_TOKEN
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

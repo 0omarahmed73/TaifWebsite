@@ -73,6 +73,15 @@ Full contract: [`specs/001-taif-website/contracts/github-releases.md`](specs/001
 - Production: set `SITE_URL` in the Vercel project environment. It is what
   enables canonical URLs, `hreflang`, OG tags, JSON-LD and the sitemap.
 
+## Automatic deploys (GitHub Actions)
+
+`.github/workflows/deploy.yml` deploys to Vercel production on every push to
+`main`, after lint, typecheck and unit tests pass. One-time setup: create a token
+in Vercel (Account Settings > Tokens) and add it as the repository secret
+`VERCEL_TOKEN` (Settings > Secrets and variables > Actions). If the Vercel project
+is later connected to this repository through Vercel's own Git integration,
+delete the workflow to avoid deploying twice.
+
 ## Vercel deployment (project owner performs the deploy)
 
 1. Import the repository; leave **Root Directory** at the repository root.

@@ -1,0 +1,52 @@
+name: Deploy to Vercel
+
+# Deploys the site to Vercel production on every push to main, after lint,
+# typecheck and unit tests pass. Needs one repository secret: VERCEL_TOKEN
+# (Vercel > Account Settings > Tokens). The IDs below are identifiers, not secrets.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: team_Ssk9tx5UFL2cjqUf1tzOsoUI
+  VERCEL_PROJECT_ID: prj_J17rH4Gdl0LOE8vbfaJ1gzTJeVp6
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Check Vercel token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Repository secret VERCEL_TOKEN is missing (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+
+      # Vercel builds remotely with the project's settings and env vars (SITE_URL).
+      - name: Deploy to production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx -y vercel@65.2.0 deploy --prod --yes --archive=tgz --token "$VERCEL_TOKEN"

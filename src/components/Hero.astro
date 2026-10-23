@@ -54,7 +54,7 @@ const homeHref = locale === "ar" ? "/ar" : "/";
         </p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
           <HeroDownload
-            client:load
+            client:idle
             locale={locale}
             primaryLabel={dict.hero.primaryAction}
             downloadFor={dict.hero.downloadFor}

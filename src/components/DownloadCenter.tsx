@@ -58,9 +58,12 @@ import { resolveState, type DownloadCenterState } from "@/lib/releases/state";
 import { suggestCurrentPlatform } from "@/lib/platform-detect";
 import { publishDownloadState } from "@/lib/releases/bus";
 
+/** Only the downloads strings, so the page does not embed the whole dictionary. */
+type DownloadsDict = Pick<Dictionary, "downloads">;
+
 interface Props {
   locale: Locale;
-  dict: Dictionary;
+  dict: DownloadsDict;
 }
 
 function formatSize(bytes: number): string {
@@ -80,7 +83,7 @@ function formatDateTime(value: number, locale: Locale): string {
   }).format(new Date(value));
 }
 
-function statusMessage(state: DownloadCenterState, dict: Dictionary): string {
+function statusMessage(state: DownloadCenterState, dict: DownloadsDict): string {
   if (state.stale) return dict.downloads.states.stale;
   switch (state.status) {
     case "loading":

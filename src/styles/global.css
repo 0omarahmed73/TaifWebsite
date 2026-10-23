@@ -193,7 +193,9 @@ details:not([data-lang-dropdown])[open]::details-content {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  /* Added by scroll-spy.ts after load, so a deep link like /#about jumps
+     instantly instead of animating from the top. */
+  html.smooth-scroll {
     scroll-behavior: smooth;
   }
 }

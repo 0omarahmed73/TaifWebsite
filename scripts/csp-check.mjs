@@ -86,6 +86,10 @@ const decoded = await page.evaluate(() => {
   return "scrolled";
 });
 console.log("Scroll:", decoded);
+// The Android screenshots sit in a hidden tab panel (lazy images are not fetched
+// while hidden), so open that tab before expecting every image to load.
+await page.getByRole("tab").last().click();
+await page.waitForTimeout(300);
 let imagesComplete = true;
 try {
   await page.waitForFunction(

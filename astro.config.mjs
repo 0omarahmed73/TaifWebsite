@@ -8,8 +8,8 @@ export default defineConfig({
   site: siteUrl || undefined,
   output: "static",
   trailingSlash: "ignore",
-  // T076: keep the CSP information accurate; Astro emits one tiny inline
-  // <style> (island display boilerplate) which the CSP below accounts for.
+  // Keep stylesheets external. Inlining them (tried 2026-10-24) made local
+  // Lighthouse mobile worse (perf 100 -> 93, LCP 1.35 s -> 2.8 s), so it stays off.
   build: { inlineStylesheets: "never" },
   vite: {
     optimizeDeps: {

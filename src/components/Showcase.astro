@@ -27,13 +27,18 @@ const androidShots = shown.filter((s) => s.platform === "android");
 const tabbed = desktopShots.length > 0 && androidShots.length > 0;
 const panelAttrs = (name: string) =>
   tabbed
-    ? { role: "tabpanel", id: `showcase-panel-${name}`, "aria-labelledby": `showcase-tab-${name}`, "data-showcase-panel": name }
+    ? { role: "tabpanel", id: `showcase-panel-${name}`, "aria-labelledby": `showcase-tab-${name}`, "data-showcase-panel": name, ...(name === "android" ? { hidden: true } : {}) }
     : {};
 const enlargeLabel = (alt: string): string =>
   dict.showcase.lightbox.enlarge.replace("{alt}", alt);
 ---
 
 <section id="showcase" class="container scroll-mt-[84px] py-16">
+  {tabbed && (
+    <noscript>
+      <style is:inline set:html="[data-showcase-panel][hidden]{display:grid!important}"></style>
+    </noscript>
+  )}
   <h2 class="text-2xl font-extrabold tracking-[-0.03em] text-foreground sm:text-3xl [&:lang(ar)]:tracking-normal">
     {dict.showcase.heading}
   </h2>

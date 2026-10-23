@@ -28,7 +28,7 @@ const { locale, dict } = Astro.props;
       </p>
     </noscript>
     <div class="mt-6">
-      <DownloadCenter client:load locale={locale} dict={dict} />
+      <DownloadCenter client:idle locale={locale} dict={{ downloads: dict.downloads }} />
     </div>
   </div>
 </section>

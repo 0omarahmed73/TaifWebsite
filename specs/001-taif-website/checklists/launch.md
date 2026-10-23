@@ -75,3 +75,21 @@ returned 200. Note: the two APKs on release v2.0.1 are named `TAIF-2.0.0-*.apk`
   hero heading with ~1.2 s render delay. Disabling the splash (reduced motion) gave
   perf 91 and LCP 3.1 s, so the splash costs about 0.3 s; the rest is
   render-blocking requests and image delivery (Lighthouse estimates 154 KiB savings).
+
+## Live re-check after the speed/hash release (2026-10-24, ed8c2bb deployed)
+
+Same method as above, against https://taif-chi.vercel.app. Mobile `/` was run 3 times.
+
+| Page | Perf | A11y | Best practices | SEO | FCP | LCP | CLS |
+|------|------|------|----------------|-----|-----|-----|-----|
+| `/` mobile (median of 3) | 94 | 100 | 96 | 100 | 2.3 s | 2.3 s | 0.028 |
+| `/ar` mobile (1 run) | 96 | 100 | 96 | 100 | 2.2 s | 2.2 s | 0.004 |
+| `/` desktop (1 run) | 100 | 100 | 96 | 100 | 0.3 s | 0.3 s | 0.009 |
+
+Before this release (single run each): `/` mobile 87, LCP 3.4 s; `/ar` mobile 90,
+LCP 3.1 s. Mobile LCP now meets the 2.5 s README target and the spec's 3 s goal.
+Caveats: single-machine runs with simulated throttling; the earlier numbers are
+one run each, so treat the improvement as indicative. Best practices 96 is the
+GitHub API 403 console error from this machine's rate limit.
+Verified live: `/` and `/ar` 200, `/showcase-test` 404, hashed `/_astro/*` assets
+served with `cache-control: public, max-age=31536000, immutable`.
